@@ -1,9 +1,7 @@
 import numpy as np
 from math import sqrt, log
 from statistics import median
-import time
 
-from CEC2022 import cec2022_func
 
 def cauchy(x_0, gamma):
     r = np.random.uniform(0, 1)
@@ -181,17 +179,6 @@ def rastrigin(x):
     A = 10
     return A * len(x) + sum((xi**2 - A * np.cos(2 * np.pi * xi)) for xi in x)
 
-def cec_problem(x):
-    if np.shape(x)[0] == 10:
-        x = np.atleast_2d(x).T
-    else:
-        x = x.T
-    fx_n = 6
-    CEC = cec2022_func(func_num = fx_n)
-    F = CEC.values(x)
-    return F.ObjFunc
-
-# Example usage:
 def run_rastrigin_test():
     # Define bounds for the variables
     D = 2  # Dimensionality of the problem
@@ -208,7 +195,6 @@ def run_rastrigin_test():
         results.append(best_value)
         print(f"Запуск {_ + 1}: Значение функции = {best_value}")
 
-    # Calculate and print the minimum, maximum, and median of the results
     min_value = min(results)
     max_value = max(results)
     median_value = median(results)
@@ -218,35 +204,6 @@ def run_rastrigin_test():
     print("Median:", median_value)
     print("Maximum:", max_value)
 
-def run_cec_test():
-    # Define bounds for the variables
-    D = 10 # Dimensionality of the problem
-    bounds = [(-100, 100)] * D
-
-    # Number of runs
-    runs = 10
-    results = []
-
-    # Run the jSO algorithm 40 times and store the best results
-    for _ in range(runs):
-        best_solution = jSO_algorithm(cec_problem, bounds)
-        best_value = cec_problem(best_solution)
-        results.append(best_value)
-        print(f"Запуск {_ + 1}: Значение функции = {best_value}")
-
-    # Calculate and print the minimum, maximum, and median of the results
-    min_value = min(results)
-    max_value = max(results)
-    median_value = median(results)
-
-    print("\nCEC Function")
-    print("Minimum:", min_value)
-    print("Median:", median_value)
-    print("Maximum:", max_value)
-    print("Mean:", np.mean(results))
-    print("std:", np.std(results))
-
 
 if __name__ == "__main__":
     run_rastrigin_test()
-    # run_cec_test()
